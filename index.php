@@ -1,11 +1,16 @@
 <?php
-       require __DIR__ . '/vendor/autoload.php';
-       use Orhanerday\OpenAi\OpenAi;
+    require './vendor/autoload.php';
+    use Orhanerday\OpenAi\OpenAi;
+
+    $dotenv = Dotenv\Dotenv::createMutable(__DIR__);
+    $dotenv->load();
+
+    $apiKey = $_ENV['OPENAI_API_KEY'];
 
     if(isset($_POST['submit'])){
         if($_POST['text']){
             $text = $_POST['text'];
-            $open_ai = new OpenAi('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');
+            $open_ai = new OpenAi($apiKey);
             //set api data
             $complete = $open_ai -> completion ([
                 'model' => "gpt-3.5-turbo-instruct",
