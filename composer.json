@@ -1,6 +1,8 @@
 {
     "require": {
         "orhanerday/open-ai": "^4.9",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "phpoffice/phpword": "^1.1",
+        "setasign/fpdf": "^1.8"
     }
 }

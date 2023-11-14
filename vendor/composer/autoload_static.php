@@ -22,10 +22,15 @@ class ComposerStaticInit6405029f70e23aeae5a145cd3210c21e
         'P' => 
         array (
             'PhpOption\\' => 10,
+            'PhpOffice\\PhpWord\\' => 18,
         ),
         'O' => 
         array (
             'Orhanerday\\OpenAi\\' => 18,
+        ),
+        'L' => 
+        array (
+            'Laminas\\Escaper\\' => 16,
         ),
         'G' => 
         array (
@@ -54,9 +59,17 @@ class ComposerStaticInit6405029f70e23aeae5a145cd3210c21e
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
         ),
+        'PhpOffice\\PhpWord\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
+        ),
         'Orhanerday\\OpenAi\\' => 
         array (
             0 => __DIR__ . '/..' . '/orhanerday/open-ai/src',
+        ),
+        'Laminas\\Escaper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-escaper/src',
         ),
         'GrahamCampbell\\ResultType\\' => 
         array (
@@ -71,6 +84,7 @@ class ComposerStaticInit6405029f70e23aeae5a145cd3210c21e
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'FPDF' => __DIR__ . '/..' . '/setasign/fpdf/fpdf.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',

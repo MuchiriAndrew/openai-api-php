@@ -1,6 +1,8 @@
 <?php
-    require './vendor/autoload.php';
+
     use Orhanerday\OpenAi\OpenAi;
+
+    require './vendor/autoload.php';
 
     $dotenv = Dotenv\Dotenv::createMutable(__DIR__);
     $dotenv->load();
@@ -25,26 +27,59 @@
         return json_decode($complete, true);
     }
 
+
+
     if(isset($_POST['submit'])){
-          if(isset($_POST['text'])){
+          if($_POST['text'] != "" && $_FILES['file']['name'] == ""){
             $text = $_POST['text'];
             $data = summarizeText($text);
             // print_r($data);
-          } elseif (isset($_FILES['file'])) {
+          } elseif ($_FILES['file']['name'] != "" && $_POST['text'] == "") {
                 $file = $_FILES['file'];
+
+                $allowedExtensions = ['txt', 'docx', 'doc', 'pdf'];
+                $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+
+            // Check if the file extension is allowed
+            if (in_array(strtolower($fileExtension), $allowedExtensions)) {
 
                 $uploadDir = "uploads/";  // Specify the directory where you want to save the uploaded files
                 $uploadPath = $uploadDir . basename($file['name']);
 
                 if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+                  if(strtolower($fileExtension) == 'txt'){
                     $myfile = fopen($uploadPath, "r") or die("Unable to open file!");
                     $text = fread($myfile, filesize($uploadPath));
                     $data = summarizeText($text);
                     fclose($myfile);
-                    $uploaded  =true;
+                  } elseif (strtolower($fileExtension) == 'docx') {
+                    // Use a different method to read text from DOCX
+                    $phpWord = \PhpOffice\PhpWord\IOFactory::load($uploadPath);
+                    $allText = '';
+
+                    foreach ($phpWord->getSections() as $section) {
+                        foreach ($section->getElements() as $element) {
+                            if ($element instanceof \PhpOffice\PhpWord\Element\TextRun) {
+                                foreach ($element->getElements() as $textElement) {
+                                    if ($textElement instanceof \PhpOffice\PhpWord\Element\Text) {
+                                        $allText .= $textElement->getText() . ' ';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    $data = summarizeText($allText);
+                  }
                 } else {
-                    echo "Error uploading file.";
+                    $placeholder_err = "Error uploading file.";
                 }
+              } else {
+                $placeholder_err = "Invalid file extension. Allowed extensions: " . implode(', ', $allowedExtensions);
+                }
+            } elseif ($_FILES['file']['name'] != "" && $_POST['text'] != "") {
+                $placeholder_err = "Please use either the text area or the file upload option, not both.";
+            } else {
+                $placeholder_err = "Please input some text or upload a file to summarize.";
             }
       }
 
@@ -148,6 +183,15 @@ input[type="file"] {
   margin-bottom: 40px;
 }
 
+#error {
+  color: red;
+  font-size:12px;
+  margin-bottom: 10px;
+  text-align: left;
+  font-style: italic;
+  font-weight: bold;
+}
+
 @media screen and (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -184,13 +228,14 @@ input[type="file"] {
 <body>
     <h1>AI Text Summarizer App</h1>
     <p> Welcome to my AI Text Summarizer App! This app leverages the power of Artificial Intelligence APIs to provide concise summaries of long texts. Whether you have a lengthy article, research paper, or any other text document that you want to summarize quickly, our app can assist you.</p>
-    <p> Simply paste your text into the text area below or upload a text file and click the "Submit" button. </p>
+    <p> Simply paste your text into the text area below or upload a text file and click the "Summarise" button. </p>
     <div class="container">
 
         <form action="index.php" method="POST" class="text-box" enctype="multipart/form-data">
-            <textarea name="text" placeholder = "<?php echo isset($placeholder_err) ? $placeholder_err : 'Input some text to summarize...'; ?>" ></textarea>
+            <textarea name="text" placeholder = "Input some text to summarize.." ></textarea>
+            <span id = 'error'><?php echo isset($placeholder_err) ? $placeholder_err : ''; ?></span>
 
-            <span>OR</span>
+            <span class = "mb-3">OR</span>
 
             <label for="file-upload" class="custom-file-upload">
               <input type="file" id="file-upload" class="submit-button" name="file">
