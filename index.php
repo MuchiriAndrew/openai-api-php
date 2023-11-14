@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
   } elseif ($_FILES['file']['name'] != "" && $_POST['text'] == "") {
     $file = $_FILES['file'];
 
-    $allowedExtensions = ['txt', 'docx', 'doc', 'pdf'];
+    $allowedExtensions = ['txt', 'docx'];
     $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
 
     // Check if the file extension is allowed
@@ -99,6 +99,7 @@ if (isset($_POST['submit'])) {
     /* padding: 20px; */
     text-align: center;
     font-family: Poppins;
+    background-color: #f5f5f5;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -224,7 +225,7 @@ if (isset($_POST['submit'])) {
 
 <body>
   <h1>AI Text Summarizer App</h1>
-  <p> Welcome to my AI Text Summarizer App! This app leverages the power of Artificial Intelligence APIs to provide concise summaries of long texts. Whether you have a lengthy article, research paper, or any other text document that you want to summarize quickly, our app can assist you.</p>
+  <p> Welcome to my AI Text Summarizer App! This app leverages the power of Artificial Intelligence APIs to provide concise summaries of long texts. Whether you have a lengthy article, research paper, or any other text document that you want to summarize quickly, this app can assist you.</p>
   <p> Simply paste your text into the text area below or upload a .txt or .docx file and click the "Summarise" button.  </p>
   <div class="container">
 
@@ -254,7 +255,7 @@ if (isset($_POST['submit'])) {
             }
           }
         } else {
-          echo "Summarised text will appear here...";
+           echo "<span style='text-align:left; color:gray;'>Summarised text will appear here...</span>";
         }
         ?>
       </p>
