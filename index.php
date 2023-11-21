@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
               if ($element instanceof \PhpOffice\PhpWord\Element\TextRun) {
                 foreach ($element->getElements() as $textElement) {
                   if ($textElement instanceof \PhpOffice\PhpWord\Element\Text) {
-                    $allText .= $textElement->getText() . ' ';
+                    $allText = $textElement->getText() . ' ';
                   }
                 }
               }
